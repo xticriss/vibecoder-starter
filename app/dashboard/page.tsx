@@ -1,8 +1,11 @@
+"use client"
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { ArrowRight, BarChart3, Code2, Database, Zap, Sparkles, BookOpen, FileText, Terminal, Palette, Package, Rocket, AlertCircle } from "lucide-react"
 import Link from "next/link"
+import { FeatherIcon } from "@/components/ui/feather-icon"
 
 export default function DashboardPage() {
   return (
@@ -271,6 +274,151 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+      </div>
+
+      {/* Feather Icons Demo Section */}
+      <div className="mt-8">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <FeatherIcon name="feather" size={20} className="text-primary" />
+              Feather Icons Demo
+            </CardTitle>
+            <CardDescription>
+              Explore the Feather Icons library with live examples. This section demonstrates how to use feather-icons in your components.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              {/* Icon Sizes Demo */}
+              <div>
+                <h4 className="font-medium mb-3">Icon Sizes</h4>
+                <div className="flex items-center gap-4 flex-wrap">
+                  <div className="flex flex-col items-center gap-2">
+                    <FeatherIcon name="home" size={16} className="text-muted-foreground" />
+                    <span className="text-xs">16px</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <FeatherIcon name="home" size={20} className="text-muted-foreground" />
+                    <span className="text-xs">20px</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <FeatherIcon name="home" size={24} className="text-muted-foreground" />
+                    <span className="text-xs">24px</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <FeatherIcon name="home" size={32} className="text-muted-foreground" />
+                    <span className="text-xs">32px</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <FeatherIcon name="home" size={48} className="text-muted-foreground" />
+                    <span className="text-xs">48px</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Common Icons Grid */}
+              <div>
+                <h4 className="font-medium mb-3">Common Icons</h4>
+                <div className="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4">
+                  {[
+                    "user", "users", "mail", "message-circle", "calendar",
+                    "clock", "bell", "settings", "search", "filter",
+                    "edit", "trash-2", "download", "upload", "share-2",
+                    "heart", "star", "bookmark", "folder", "file",
+                    "image", "video", "camera", "mic", "headphones",
+                    "play", "pause", "volume-2", "wifi", "bluetooth",
+                    "battery", "cpu", "hard-drive", "server", "database",
+                    "cloud", "lock", "unlock", "shield", "check",
+                    "x", "plus", "minus", "arrow-up", "arrow-down",
+                    "arrow-left", "arrow-right", "refresh-cw", "rotate-cw", "maximize"
+                  ].map((icon) => (
+                    <div
+                      key={icon}
+                      className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-muted transition-colors cursor-pointer group"
+                    >
+                      <FeatherIcon 
+                        name={icon} 
+                        size={20} 
+                        className="text-muted-foreground group-hover:text-foreground transition-colors" 
+                      />
+                      <span className="text-xs text-center break-all">{icon}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Color Examples */}
+              <div>
+                <h4 className="font-medium mb-3">Colors & Styling</h4>
+                <div className="flex items-center gap-4 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <FeatherIcon name="heart" size={24} className="text-red-500" />
+                    <span className="text-sm">text-red-500</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FeatherIcon name="star" size={24} className="text-yellow-500" />
+                    <span className="text-sm">text-yellow-500</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FeatherIcon name="check-circle" size={24} className="text-green-500" />
+                    <span className="text-sm">text-green-500</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FeatherIcon name="info" size={24} className="text-blue-500" />
+                    <span className="text-sm">text-blue-500</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FeatherIcon name="alert-triangle" size={24} className="text-amber-500" />
+                    <span className="text-sm">text-amber-500</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Usage Example */}
+              <div>
+                <h4 className="font-medium mb-3">Usage Example</h4>
+                <div className="rounded-lg bg-muted/50 p-4">
+                  <pre className="text-sm overflow-x-auto">
+                    <code>{`import { FeatherIcon } from "@/components/ui/feather-icon"
+
+export function MyComponent() {
+  return (
+    <button className="flex items-center gap-2">
+      <FeatherIcon name="download" size={20} />
+      Download File
+    </button>
+  )
+}`}</code>
+                  </pre>
+                </div>
+              </div>
+
+              {/* Interactive Demo */}
+              <div>
+                <h4 className="font-medium mb-3">Interactive Examples</h4>
+                <div className="flex flex-wrap gap-3">
+                  <Button variant="outline" size="sm">
+                    <FeatherIcon name="mail" size={16} className="mr-2" />
+                    Send Email
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <FeatherIcon name="download" size={16} className="mr-2" />
+                    Download
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <FeatherIcon name="share-2" size={16} className="mr-2" />
+                    Share
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <FeatherIcon name="printer" size={16} className="mr-2" />
+                    Print
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
