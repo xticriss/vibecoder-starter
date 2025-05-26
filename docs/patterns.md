@@ -289,6 +289,58 @@ export function ItemsList() {
 }
 ```
 
+### Icon Usage Patterns
+```typescript
+// Using Lucide React (primary icon library)
+import { User, Settings, ChevronRight } from "lucide-react"
+
+export function IconButton() {
+  return (
+    <button className="flex items-center gap-2 px-4 py-2">
+      <User className="h-4 w-4" />
+      Profile
+      <ChevronRight className="h-4 w-4" />
+    </button>
+  )
+}
+```
+
+```typescript
+// Using Feather Icons (alternative option)
+import feather from "feather-icons"
+import { useEffect, useRef } from "react"
+
+export function FeatherIcon({ name, size = 16, className = "" }: {
+  name: string
+  size?: number
+  className?: string
+}) {
+  const iconRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (iconRef.current) {
+      iconRef.current.innerHTML = feather.icons[name].toSvg({
+        width: size,
+        height: size,
+        class: className
+      })
+    }
+  }, [name, size, className])
+
+  return <div ref={iconRef} className="inline-flex" />
+}
+
+// Usage
+export function FeatherExample() {
+  return (
+    <div className="flex items-center gap-2">
+      <FeatherIcon name="user" size={16} className="text-muted-foreground" />
+      <FeatherIcon name="settings" size={20} className="text-primary" />
+    </div>
+  )
+}
+```
+
 ## 🚀 Deployment Patterns
 
 ### Environment Validation

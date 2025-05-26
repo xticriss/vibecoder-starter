@@ -7,6 +7,7 @@
 - **Framework**: Next.js 15+ with App Router (TypeScript, SSR)
 - **Styling**: Tailwind CSS
 - **UI Components**: shadcn/ui
+- **Icons**: Lucide React (primary) + Feather Icons (alternative)
 - **Database**: Turso (SQLite) + Prisma ORM
 - **State Management**: TanStack Query
 - **Forms**: React Hook Form + Zod validation

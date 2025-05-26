@@ -8,6 +8,7 @@
 - **TypeScript** with strict mode for type safety
 - **Tailwind CSS** for utility-first styling
 - **shadcn/ui** for beautiful, accessible components
+- **Lucide React + Feather Icons** for comprehensive icon libraries
 - **Turso + Prisma** for edge-ready database with type-safe ORM
 - **TanStack Query** for powerful data fetching
 - **React Hook Form + Zod** for form handling and validation

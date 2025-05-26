@@ -103,6 +103,25 @@ Create a navigation component that:
 - Follows the component pattern from my template
 ```
 
+### Icon Components
+```
+Create icon components using Lucide React:
+- Import specific icons: [list icon names]
+- Use consistent sizing (h-4 w-4 for small, h-5 w-5 for medium)
+- Apply proper Tailwind classes for colors
+- Include hover states and transitions
+- Make icons accessible with proper aria-labels
+```
+
+```
+Create a FeatherIcon wrapper component that:
+- Accepts icon name, size, and className props
+- Uses feather-icons library with useEffect for rendering
+- Has TypeScript interfaces for all props
+- Supports all standard Feather icon names
+- Applies Tailwind classes correctly
+```
+
 ## 🔧 Feature Development Prompts
 
 ### CRUD Feature Set

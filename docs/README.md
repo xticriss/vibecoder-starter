@@ -105,6 +105,8 @@ Core dependencies and their purposes:
 - **TypeScript**: Type safety
 - **Tailwind CSS**: Utility-first styling
 - **shadcn/ui**: Component library
+- **Lucide React**: Primary icon library (React components)
+- **Feather Icons**: Alternative icon library (SVG-based)
 - **Prisma**: Database ORM
 - **TanStack Query**: Data fetching and caching
 - **React Hook Form**: Form handling
