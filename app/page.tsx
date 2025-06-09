@@ -53,9 +53,9 @@ export default function Home() {
           <Card>
             <CardHeader>
               <Database className="mb-2 h-8 w-8 text-primary" />
-              <CardTitle>Turso + Prisma</CardTitle>
+              <CardTitle>Supabase + Prisma</CardTitle>
               <CardDescription>
-                Edge-ready SQLite database with type-safe ORM and migrations
+                PostgreSQL database with type-safe ORM and migrations
               </CardDescription>
             </CardHeader>
           </Card>

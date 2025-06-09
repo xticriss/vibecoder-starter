@@ -1,101 +1,52 @@
-# LLM-Friendly Next.js Starter Template
+# LLM-Friendly Next.js Starter
 
-> A simplified, production-ready starter template for AI-assisted development with Next.js, TypeScript, Tailwind CSS, shadcn/ui, and Prisma.
+A minimal, production-ready starter optimized for AI-assisted development.
 
-## 🚀 Features
+## Stack
 
-- **Next.js 15+** with App Router and Server Components
-- **TypeScript** with strict mode for type safety
-- **Tailwind CSS** for utility-first styling
-- **shadcn/ui** for beautiful, accessible components
-- **Lucide React + Feather Icons** for comprehensive icon libraries
-- **Turso + Prisma** for edge-ready database with type-safe ORM
-- **TanStack Query** for powerful data fetching
-- **React Hook Form + Zod** for form handling and validation
+- **Next.js 15** + TypeScript + App Router
+- **Supabase** + Prisma (PostgreSQL)
+- **Tailwind CSS** + shadcn/ui
+- **TanStack Query** + React Hook Form + Zod
 
-## 📦 Quick Start
+## Quick Setup
 
-### Prerequisites
-
-- Node.js 18+ installed
-- A Turso database account (free tier available) or use local SQLite
-
-### Installation
-
-1. Clone the repository:
 ```bash
-git clone <your-repo>
-cd vibecoder-starter
-```
-
-2. Install dependencies:
-```bash
+# 1. Install and setup
 npm install
-```
-
-3. Set up environment variables:
-```bash
 cp .env.example .env
-```
 
-Then edit `.env` with your database URL:
-- For Turso: `DATABASE_URL="libsql://your-db.turso.io?authToken=your-token"`
-- For local SQLite: `DATABASE_URL="file:./prisma/dev.db"`
+# 2. Configure database (edit .env)
+DATABASE_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres"
 
-4. Set up the database:
-```bash
+# 3. Initialize database
 npm run db:generate
 npm run db:push
-npm run db:seed # Optional: seed with sample data
-```
+npm run db:seed
 
-5. Start the development server:
-```bash
+# 4. Start development
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to see your app!
-
-## 📚 Project Structure
+## Project Structure
 
 ```
-├── app/                    # Next.js App Router
-│   ├── api/               # API routes
-│   ├── dashboard/         # Dashboard page
-│   └── layout.tsx         # Root layout with providers
-├── components/            # React components
-│   ├── ui/               # shadcn/ui components
-│   ├── forms/            # Form components
-│   └── providers/        # Context providers
-├── lib/                   # Utilities and configurations
-│   ├── db.ts             # Prisma client
-│   ├── queries.ts        # TanStack Query hooks
-│   ├── utils.ts          # Utility functions
-│   └── validations.ts    # Zod schemas
-├── prisma/               # Database schema
-├── scripts/              # Database scripts
-└── types/                # TypeScript type definitions
+├── app/                 # Next.js App Router
+│   ├── api/            # API routes
+│   ├── dashboard/      # Dashboard page
+│   └── page.tsx        # Home page
+├── components/         # React components
+│   ├── ui/            # shadcn/ui components
+│   └── forms/         # Form components
+├── lib/               # Core utilities
+│   ├── db.ts          # Prisma client
+│   ├── queries.ts     # TanStack Query hooks
+│   ├── utils.ts       # Utilities
+│   └── validations.ts # Zod schemas
+└── prisma/            # Database schema
 ```
 
-## 🛠️ Available Scripts
-
-```json
-npm run dev        # Start development server
-npm run build      # Build for production
-npm run start      # Start production server
-npm run lint       # Run ESLint
-npm run lint:fix   # Fix ESLint errors
-npm run format     # Format code with Prettier
-npm run type-check # Check TypeScript types
-npm run db:generate # Generate Prisma client
-npm run db:push    # Push schema to database
-npm run db:studio  # Open Prisma Studio
-npm run db:seed    # Seed database with sample data
-```
-
-## 🗄️ Database Schema
-
-The template includes two simple models to get you started:
+## Database Schema
 
 ```prisma
 model User {
@@ -120,49 +71,52 @@ model Post {
 }
 ```
 
-## 🚀 Deployment
+## Scripts
 
-### Deploy to Vercel
-
-1. Push your code to GitHub
-2. Import your repository in Vercel
-3. Add your `DATABASE_URL` environment variable
-4. Deploy!
-
-## 📖 Documentation
-
-This template includes comprehensive documentation for AI-assisted development:
-
-- **[Patterns Guide](/docs/patterns.md)** - Common code patterns and conventions
-- **[Prompts Guide](/docs/prompts.md)** - Effective prompts for generating code
-- **[Template Reference](/docs/template.md)** - Complete template structure and examples
-
-## 🤖 LLM Development Tips
-
-This template is optimized for AI-assisted development. When prompting your AI assistant:
-
-### Creating Components
-```
-"Create a blog post list component with shadcn/ui Card, showing title, excerpt, and publish date"
+```bash
+npm run dev         # Development server
+npm run build       # Production build
+npm run db:generate # Generate Prisma client
+npm run db:push     # Push schema to database
+npm run db:studio   # Open Prisma Studio
+npm run db:seed     # Seed database
 ```
 
-### Database Operations
+## LLM Development Context
+
+When prompting AI assistants, include this context:
+
 ```
-"Add a categories table with many-to-many relationship to posts"
+I'm using Next.js 15 with TypeScript, Supabase + Prisma, Tailwind CSS, shadcn/ui, TanStack Query, React Hook Form, and Zod validation. Follow the patterns from my template.
 ```
 
-### Forms
-```
-"Create a contact form with name, email, and message fields using React Hook Form and Zod validation"
-```
+## Documentation
 
-### API Routes
-```
-"Create an API route to handle post publishing with proper error handling"
-```
+- **[Patterns](/docs/patterns.md)** - Code patterns and conventions
+- **[Prompts](/docs/prompts.md)** - Effective prompts for common tasks
 
-For more detailed prompts and patterns, check out the [documentation](/docs).
+## Deploy to Vercel
 
-## 📝 License
+1. Push to GitHub
+2. Import in Vercel
+3. Add `DATABASE_URL` environment variable
+4. Deploy
 
-MIT License - feel free to use this template for your projects!
+## Troubleshooting
+
+### Database Connection
+- Verify `DATABASE_URL` format: `postgresql://user:pass@host:port/db`
+- Check Supabase project is active and accessible
+- Ensure your IP is allowlisted in Supabase
+
+### Build Errors
+- Run `npm run type-check` to identify TypeScript errors
+- Clear `.next` folder if getting stale build errors
+- Verify all required environment variables are set
+
+### Common Issues
+- **Prisma errors**: Run `npm run db:generate` after schema changes
+- **Import errors**: Check file paths use `@/` prefix for src imports
+- **Type errors**: Ensure all components import proper types from `@/lib/types`
+
+MIT License

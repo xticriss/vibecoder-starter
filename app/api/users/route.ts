@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { userSchema } from "@/lib/validations"
+import { API_CONFIG } from "@/lib/constants"
 
 export async function GET() {
   try {
@@ -15,7 +16,7 @@ export async function GET() {
       orderBy: {
         createdAt: "desc",
       },
-      take: 10,
+      take: API_CONFIG.DEFAULT_PAGE_SIZE,
     })
 
     return NextResponse.json(users)

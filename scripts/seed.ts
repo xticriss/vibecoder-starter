@@ -1,51 +1,59 @@
-import { createClient } from "@libsql/client"
+import { PrismaClient } from "@prisma/client"
 import dotenv from "dotenv"
 import path from "path"
 
 // Load environment variables
 dotenv.config({ path: path.resolve(process.cwd(), '.env') })
 
-const client = createClient({
-  url: process.env.DATABASE_URL!,
-  authToken: process.env.DATABASE_URL!.split("?authToken=")[1],
-})
+const prisma = new PrismaClient()
 
 async function seed() {
   console.log("🌱 Starting database seeding...")
 
   try {
-    // Generate a unique ID (simple version)
-    const userId = `user_${Date.now()}`
-    const postId1 = `post_${Date.now()}_1`
-    const postId2 = `post_${Date.now()}_2`
-
     // Create a test user
-    await client.execute({
-      sql: `INSERT INTO User (id, email, name, createdAt, updatedAt) VALUES (?, ?, ?, datetime('now'), datetime('now'))`,
-      args: [userId, "test@example.com", "Test User"]
+    const user = await prisma.user.upsert({
+      where: { email: "test@example.com" },
+      update: {},
+      create: {
+        email: "test@example.com",
+        name: "Test User",
+      },
     })
 
     // Create test posts
-    await client.execute({
-      sql: `INSERT INTO Post (id, title, content, published, authorId, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now'))`,
-      args: [postId1, "First Post", "This is the content of the first post", 1, userId]
+    const post1 = await prisma.post.upsert({
+      where: { id: "post_1" },
+      update: {},
+      create: {
+        id: "post_1",
+        title: "First Post",
+        content: "This is the content of the first post",
+        published: true,
+        authorId: user.id,
+      },
     })
 
-    await client.execute({
-      sql: `INSERT INTO Post (id, title, content, published, authorId, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now'))`,
-      args: [postId2, "Second Post", "This is the content of the second post", 0, userId]
+    const post2 = await prisma.post.upsert({
+      where: { id: "post_2" },
+      update: {},
+      create: {
+        id: "post_2",
+        title: "Second Post",
+        content: "This is the content of the second post",
+        published: false,
+        authorId: user.id,
+      },
     })
 
     console.log("✅ Seeding completed successfully!")
-    console.log(`Created user: ${userId}`)
-    console.log(`Created posts: ${postId1}, ${postId2}`)
+    console.log(`Created user: ${user.id}`)
+    console.log(`Created posts: ${post1.id}, ${post2.id}`)
   } catch (error: any) {
-    if (error.message?.includes("UNIQUE constraint failed")) {
-      console.log("⚠️  Test data already exists in the database")
-    } else {
-      console.error("❌ Seeding failed:", error)
-      process.exit(1)
-    }
+    console.error("❌ Seeding failed:", error)
+    process.exit(1)
+  } finally {
+    await prisma.$disconnect()
   }
 }
 

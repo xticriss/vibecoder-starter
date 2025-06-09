@@ -1,44 +1,21 @@
-import { createClient } from "@libsql/client"
+import { execSync } from "child_process"
 import dotenv from "dotenv"
 import path from "path"
 
 // Load environment variables
 dotenv.config({ path: path.resolve(process.cwd(), '.env') })
 
-const client = createClient({
-  url: process.env.DATABASE_URL!,
-  authToken: process.env.DATABASE_URL!.split("?authToken=")[1],
-})
-
 async function migrate() {
   console.log("🚀 Starting database migration...")
 
   try {
-    // Create tables
-    await client.execute(`
-      CREATE TABLE IF NOT EXISTS User (
-        id TEXT PRIMARY KEY,
-        name TEXT,
-        email TEXT NOT NULL UNIQUE,
-        image TEXT,
-        createdAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updatedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-      )
-    `)
-
-    await client.execute(`
-      CREATE TABLE IF NOT EXISTS Post (
-        id TEXT PRIMARY KEY,
-        title TEXT NOT NULL,
-        content TEXT,
-        published INTEGER NOT NULL DEFAULT 0,
-        createdAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updatedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        authorId TEXT NOT NULL,
-        FOREIGN KEY (authorId) REFERENCES User(id) ON DELETE CASCADE
-      )
-    `)
-
+    // Use Prisma to push schema to database
+    console.log("📋 Pushing schema to database...")
+    execSync("npx prisma db push", { stdio: "inherit" })
+    
+    console.log("🔄 Generating Prisma client...")
+    execSync("npx prisma generate", { stdio: "inherit" })
+    
     console.log("✅ Migration completed successfully!")
   } catch (error) {
     console.error("❌ Migration failed:", error)
