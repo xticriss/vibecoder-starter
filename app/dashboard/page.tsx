@@ -3,10 +3,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { ArrowRight, BarChart3, Code2, Database, Zap, Sparkles, BookOpen, AlertCircle, Package, Rocket, Palette, Terminal } from "lucide-react"
+import { ArrowRight, BarChart3, Code2, Database, Zap, Sparkles, BookOpen, AlertCircle, Package, Rocket, Palette, Terminal, User } from "lucide-react"
 import Link from "next/link"
+import { useAuth } from "@/components/providers/auth-provider"
+import { ROUTES } from "@/lib/constants"
 
 export default function DashboardPage() {
+  const { user, logout } = useAuth()
+
   return (
     <div className="container mx-auto py-8">
       {/* Template Notice */}
@@ -17,9 +21,26 @@ export default function DashboardPage() {
         </AlertDescription>
       </Alert>
 
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">Template ready for AI-assisted development</p>
+      <div className="mb-8 flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold">
+            Welcome back, {user?.name || "User"}!
+          </h1>
+          <p className="text-muted-foreground">
+            Your dashboard with authentication-protected content
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" asChild>
+            <Link href={ROUTES.PROFILE}>
+              <User className="h-4 w-4 mr-2" />
+              Profile
+            </Link>
+          </Button>
+          <Button variant="outline" onClick={() => logout()}>
+            Sign out
+          </Button>
+        </div>
       </div>
 
       {/* Example Metrics */}
@@ -198,21 +219,21 @@ export default function DashboardPage() {
               <div className="rounded-lg border bg-muted/50 p-3">
                 <p className="text-sm font-medium mb-1">Component Creation:</p>
                 <p className="text-xs text-muted-foreground italic">
-                  "Create a UserProfile component using shadcn/ui Card with avatar and bio"
+                  &ldquo;Create a UserProfile component using shadcn/ui Card with avatar and bio&rdquo;
                 </p>
               </div>
               
               <div className="rounded-lg border bg-muted/50 p-3">
                 <p className="text-sm font-medium mb-1">Database Schema:</p>
                 <p className="text-xs text-muted-foreground italic">
-                  "Add a Product model with title, price, and category relationship"
+                  &ldquo;Add a Product model with title, price, and category relationship&rdquo;
                 </p>
               </div>
               
               <div className="rounded-lg border bg-muted/50 p-3">
                 <p className="text-sm font-medium mb-1">API Routes:</p>
                 <p className="text-xs text-muted-foreground italic">
-                  "Create CRUD API routes for products with Zod validation"
+                  &ldquo;Create CRUD API routes for products with Zod validation&rdquo;
                 </p>
               </div>
             </CardContent>

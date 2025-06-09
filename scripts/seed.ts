@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import dotenv from "dotenv"
 import path from "path"
+import bcrypt from "bcryptjs"
 
 // Load environment variables
 dotenv.config({ path: path.resolve(process.cwd(), '.env') })
@@ -12,12 +13,15 @@ async function seed() {
 
   try {
     // Create a test user
+    const hashedPassword = await bcrypt.hash("password123", 12)
+    
     const user = await prisma.user.upsert({
       where: { email: "test@example.com" },
       update: {},
       create: {
         email: "test@example.com",
         name: "Test User",
+        password: hashedPassword,
       },
     })
 

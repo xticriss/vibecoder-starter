@@ -2,16 +2,10 @@ import { z } from "zod"
 
 const envSchema = z.object({
   DATABASE_URL: z.string().url().startsWith("postgresql://"),
-  NEXTAUTH_SECRET: z.string().min(1),
-  NEXTAUTH_URL: z.string().url(),
-  GOOGLE_CLIENT_ID: z.string().min(1),
-  GOOGLE_CLIENT_SECRET: z.string().min(1),
+  JWT_SECRET: z.string().min(32, "JWT_SECRET must be at least 32 characters"),
 })
 
 export const env = envSchema.parse({
   DATABASE_URL: process.env.DATABASE_URL,
-  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-  NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  JWT_SECRET: process.env.JWT_SECRET,
 })

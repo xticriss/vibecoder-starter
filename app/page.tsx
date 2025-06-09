@@ -1,9 +1,15 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowRight, Code2, Database, Palette, Sparkles, Zap, Layers } from "lucide-react"
+import { useAuth } from "@/components/providers/auth-provider"
+import { ROUTES } from "@/lib/constants"
 
 export default function Home() {
+  const { user, isLoading } = useAuth()
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -16,12 +22,30 @@ export default function Home() {
             The perfect stack for AI-assisted development with Next.js, TypeScript, Tailwind, shadcn/ui, Prisma, and more.
           </p>
           <div className="flex gap-4 justify-center">
-            <Button asChild size="lg">
-              <Link href="/dashboard">
-                View Dashboard
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
+            {!isLoading && (
+              user ? (
+                <Button asChild size="lg">
+                  <Link href={ROUTES.DASHBOARD}>
+                    Go to Dashboard
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              ) : (
+                <>
+                  <Button asChild size="lg">
+                    <Link href={ROUTES.LOGIN}>
+                      Sign in
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button asChild size="lg" variant="outline">
+                    <Link href={ROUTES.REGISTER}>
+                      Create account
+                    </Link>
+                  </Button>
+                </>
+              )
+            )}
           </div>
         </div>
       </div>
@@ -100,12 +124,23 @@ export default function Home() {
             <p className="mb-8 text-muted-foreground">
               Start building your next project with our production-ready template
             </p>
-            <Button asChild size="lg">
-              <Link href="/dashboard">
-                Get Started
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
+            {!isLoading && (
+              user ? (
+                <Button asChild size="lg">
+                  <Link href={ROUTES.DASHBOARD}>
+                    Go to Dashboard
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              ) : (
+                <Button asChild size="lg">
+                  <Link href={ROUTES.REGISTER}>
+                    Get Started
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              )
+            )}
           </CardContent>
         </Card>
       </div>

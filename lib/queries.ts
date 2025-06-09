@@ -1,68 +1,52 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import type { User } from "./types"
-import type { UserFormValues } from "./validations"
+import { toast } from "sonner"
+import type { UserPublic } from "./types"
+import type { ProfileFormValues } from "./validations"
 import { API_ROUTES, QUERY_KEYS } from "./constants"
 
-// User queries
-export function useUsers() {
+// Profile queries
+export function useProfile() {
   return useQuery({
     queryKey: QUERY_KEYS.USERS,
-    queryFn: async (): Promise<User[]> => {
+    queryFn: async (): Promise<UserPublic> => {
       const res = await fetch(API_ROUTES.USERS)
-      if (!res.ok) throw new Error("Failed to fetch users")
+      if (!res.ok) {
+        if (res.status === 401) {
+          throw new Error("Authentication required")
+        }
+        throw new Error("Failed to fetch profile")
+      }
       return res.json()
     },
   })
 }
 
-export function useUser(id: string) {
-  return useQuery({
-    queryKey: QUERY_KEYS.USER(id),
-    queryFn: async (): Promise<User> => {
-      const res = await fetch(`${API_ROUTES.USERS}/${id}`)
-      if (!res.ok) throw new Error("Failed to fetch user")
-      return res.json()
-    },
-    enabled: !!id,
-  })
-}
-
-// User mutations
-export function useCreateUser() {
+// Profile mutations
+export function useUpdateProfile() {
   const queryClient = useQueryClient()
   
   return useMutation({
-    mutationFn: async (userData: UserFormValues): Promise<User> => {
+    mutationFn: async (profileData: ProfileFormValues): Promise<UserPublic> => {
       const res = await fetch(API_ROUTES.USERS, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      })
-      if (!res.ok) throw new Error("Failed to create user")
-      return res.json()
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USERS })
-    },
-  })
-}
-
-export function useUpdateUser(id: string) {
-  const queryClient = useQueryClient()
-  
-  return useMutation({
-    mutationFn: async (userData: Partial<UserFormValues>): Promise<User> => {
-      const res = await fetch(`${API_ROUTES.USERS}/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(profileData),
       })
-      if (!res.ok) throw new Error("Failed to update user")
+      
+      if (!res.ok) {
+        const error = await res.json()
+        throw new Error(error.error || "Failed to update profile")
+      }
+      
       return res.json()
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USERS })
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER(id) })
+    onSuccess: (updatedUser) => {
+      queryClient.setQueryData(QUERY_KEYS.USERS, updatedUser)
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.AUTH_USER })
+      toast.success("Profile updated successfully!")
+    },
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 }

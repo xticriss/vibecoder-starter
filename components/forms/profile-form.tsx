@@ -5,31 +5,28 @@ import { useForm } from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { userSchema, type UserFormValues } from "@/lib/validations"
-import { useCreateUser } from "@/lib/queries"
-import { toast } from "sonner"
+import { profileSchema, type ProfileFormValues } from "@/lib/validations"
+import { useUpdateProfile } from "@/lib/queries"
+import { useAuth } from "@/components/providers/auth-provider"
 
-interface UserFormProps {
-  onSuccess?: () => void
-}
-
-export function UserForm({ onSuccess }: UserFormProps) {
-  const createUser = useCreateUser()
+export function ProfileForm() {
+  const { user } = useAuth()
+  const updateProfile = useUpdateProfile()
   
-  const form = useForm<UserFormValues>({
-    resolver: zodResolver(userSchema),
-    defaultValues: { name: "", email: "" },
+  const form = useForm<ProfileFormValues>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: { 
+      name: user?.name || "", 
+      email: user?.email || "" 
+    },
   })
 
-  async function onSubmit(data: UserFormValues) {
-    try {
-      await createUser.mutateAsync(data)
-      toast.success("User created successfully!")
-      form.reset()
-      onSuccess?()
-    } catch (error) {
-      toast.error("Failed to create user")
-    }
+  async function onSubmit(data: ProfileFormValues) {
+    await updateProfile.mutateAsync(data)
+  }
+
+  if (!user) {
+    return null
   }
 
   return (
@@ -42,7 +39,10 @@ export function UserForm({ onSuccess }: UserFormProps) {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter name" {...field} />
+                <Input 
+                  placeholder="Enter your full name" 
+                  {...field} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -55,14 +55,18 @@ export function UserForm({ onSuccess }: UserFormProps) {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="Enter email" {...field} />
+                <Input 
+                  type="email" 
+                  placeholder="Enter your email" 
+                  {...field} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={createUser.isPending}>
-          {createUser.isPending ? "Creating..." : "Create User"}
+        <Button type="submit" disabled={updateProfile.isPending}>
+          {updateProfile.isPending ? "Updating..." : "Update profile"}
         </Button>
       </form>
     </Form>

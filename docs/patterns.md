@@ -303,41 +303,16 @@ export function IconButton() {
     </button>
   )
 }
-```
 
-```typescript
-// Using Feather Icons (alternative option)
-import feather from "feather-icons"
-import { useEffect, useRef } from "react"
-
-export function FeatherIcon({ name, size = 16, className = "" }: {
-  name: string
-  size?: number
-  className?: string
-}) {
-  const iconRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (iconRef.current) {
-      iconRef.current.innerHTML = feather.icons[name].toSvg({
-        width: size,
-        height: size,
-        class: className
-      })
-    }
-  }, [name, size, className])
-
-  return <div ref={iconRef} className="inline-flex" />
-}
-
-// Usage
-export function FeatherExample() {
-  return (
-    <div className="flex items-center gap-2">
-      <FeatherIcon name="user" size={16} className="text-muted-foreground" />
-      <FeatherIcon name="settings" size={20} className="text-primary" />
-    </div>
-  )
+// Icon with dynamic styling
+export function StatusIcon({ status }: { status: "success" | "error" | "pending" }) {
+  const iconClass = {
+    success: "text-green-500",
+    error: "text-red-500", 
+    pending: "text-yellow-500"
+  }[status]
+  
+  return <Settings className={`h-4 w-4 ${iconClass}`} />
 }
 ```
 

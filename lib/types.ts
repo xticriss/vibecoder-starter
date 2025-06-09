@@ -3,8 +3,19 @@ export interface User {
   id: string
   name: string | null
   email: string
+  password: string
   image: string | null
   createdAt: Date
+  updatedAt: Date
+}
+
+export interface UserPublic {
+  id: string
+  name: string | null
+  email: string
+  image: string | null
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface Post {
@@ -15,7 +26,15 @@ export interface Post {
   createdAt: Date
   updatedAt: Date
   authorId: string
-  author?: User
+  author?: UserPublic
+}
+
+// Auth types
+export interface AuthUser {
+  id: string
+  name: string | null
+  email: string
+  image: string | null
 }
 
 // API response types

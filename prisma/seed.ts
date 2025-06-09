@@ -5,12 +5,16 @@ import path from "path"
 dotenv.config({ path: path.resolve(process.cwd(), '.env') })
 
 import { prisma } from "../lib/db"
+import { hashPassword } from "../lib/auth"
 
 async function main() {
+  const hashedPassword = await hashPassword("password123")
+  
   const user = await prisma.user.create({
     data: {
       email: "test@example.com",
       name: "Test User",
+      password: hashedPassword,
       posts: {
         create: [
           {

@@ -16,8 +16,9 @@ A minimal, production-ready starter optimized for AI-assisted development.
 npm install
 cp .env.example .env
 
-# 2. Configure database (edit .env)
+# 2. Configure environment (edit .env)
 DATABASE_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres"
+JWT_SECRET="your-super-secret-jwt-key-min-32-chars-long"
 
 # 3. Initialize database
 npm run db:generate
@@ -46,6 +47,16 @@ npm run dev
 └── prisma/            # Database schema
 ```
 
+## Authentication
+
+Ready-to-use JWT authentication with secure patterns:
+
+- **Login/Register**: Complete forms with validation
+- **Protected routes**: Middleware-based route protection
+- **User sessions**: Secure httpOnly cookie storage
+- **Profile management**: User profile updates
+- **Password security**: bcrypt hashing
+
 ## Database Schema
 
 ```prisma
@@ -53,10 +64,11 @@ model User {
   id        String   @id @default(cuid())
   name      String?
   email     String   @unique
+  password  String   # bcrypt hashed
   image     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  posts     Post[]
+  posts     Post[]   # User-owned content
 }
 
 model Post {
@@ -87,8 +99,15 @@ npm run db:seed     # Seed database
 When prompting AI assistants, include this context:
 
 ```
-I'm using Next.js 15 with TypeScript, Supabase + Prisma, Tailwind CSS, shadcn/ui, TanStack Query, React Hook Form, and Zod validation. Follow the patterns from my template.
+I'm using Next.js 15 with TypeScript, Supabase + Prisma, Tailwind CSS, shadcn/ui, TanStack Query, React Hook Form, Zod validation, and JWT authentication. Follow the patterns from my template.
 ```
+
+## Authentication Examples
+
+- **Login**: `/login` - Complete login form
+- **Register**: `/register` - User registration
+- **Dashboard**: `/dashboard` - Protected route (requires auth)
+- **Profile**: `/profile` - User profile management
 
 ## Documentation
 
@@ -99,7 +118,9 @@ I'm using Next.js 15 with TypeScript, Supabase + Prisma, Tailwind CSS, shadcn/ui
 
 1. Push to GitHub
 2. Import in Vercel
-3. Add `DATABASE_URL` environment variable
+3. Add environment variables:
+   - `DATABASE_URL` (your Supabase connection string)
+   - `JWT_SECRET` (secure random string, 32+ characters)
 4. Deploy
 
 ## Troubleshooting
